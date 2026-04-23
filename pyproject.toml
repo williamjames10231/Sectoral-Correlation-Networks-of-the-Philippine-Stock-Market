@@ -1,0 +1,71 @@
+[build-system]
+requires = [
+    "setuptools>=68",
+    "wheel"
+]
+build_backend = "setuptools.build_meta"
+
+[project]
+name = "Sectoral Correlation Networks of Philippine Stock Exchange"
+version = "0.1.0"
+description = "A graph theoretic approach to analyzing the structural risk of the six PSE sectors before and during the Covid-19 pandemic and Enhanced Community Quarantine"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {
+    text = "MIT"
+}
+
+authors = [
+    {
+        name = "williamjames10231"
+    }
+]
+
+keywords =[
+    "math",
+    "sectors",
+    "correlation matrix",
+    "distance matrix",
+    "finance",
+    "structural Risk",
+    "market Contagion",
+    "minimum spanning tree"
+]
+
+dependencies =[
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "jupyterlab>=4.0",
+    "ipykernel>=6.0",
+    "jupyter>=1.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "black>=23.0",
+    "ruff>=0.1",
+    "mypy>=1.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "Correlations_Distance_matrices_engine*",
+    "notebook*"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312"]
+ 
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+ 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=Correlations_Distance_matrices_engine --cov-report=term-missing"
+ 

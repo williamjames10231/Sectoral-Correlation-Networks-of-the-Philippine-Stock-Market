@@ -336,3 +336,5 @@ widgetsnbextension==4.0.15
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+sagemath

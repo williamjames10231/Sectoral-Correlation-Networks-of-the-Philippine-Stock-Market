@@ -1,0 +1,958 @@
+\documentclass[english,12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{tabularx,booktabs,setspace,caption}
+\usepackage{array,multicol,multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{rotating}
+\usepackage{longtable}
+
+%%%%%% PAPER LAYOUT - DO NOT EDIT. DO NOT DELETE. %%%%%
+\DeclareCaptionLabelSeparator*{spaced}{\\[12pt]}
+\captionsetup[table]{textfont=it,format=plain,justification=justified,
+	singlelinecheck=false,labelsep=spaced,skip=12pt}
+\captionsetup[figure]{textfont=it,format=plain,justification=justified,
+	singlelinecheck=false,labelsep=spaced,skip=12pt}
+
+%%%%%% PAPER LAYOUT - DO NOT EDIT. DO NOT DELETE. %%%%%
+\usepackage{enumitem}
+\usepackage{lipsum}
+\usepackage{setspace}
+\usepackage{indentfirst}
+
+%%%%%% PAPER LAYOUT - DO NOT EDIT. DO NOT DELETE. %%%%%
+\usepackage{titlesec}
+	\setcounter{secnumdepth}{0}	%<-remove section numbering
+	\titleformat{\section}
+	{\centering\normalfont\large\bfseries}
+	{\thesection}
+	{1em}
+	{\MakeUppercase}
+	\titlespacing{\section}{0pt}{2ex plus 1ex minus 0ex}{0ex}
+	
+	\titleformat{\subsection}
+	{\normalfont\bfseries}
+	{\thesubsection}
+	{0pt}
+	{}
+	\titlespacing{\subsection}{0pt}{2ex plus 1ex minus 0ex}{0ex}
+	
+%%%%%% PAPER LAYOUT - DO NOT EDIT. DO NOT DELETE. %%%%%
+\usepackage{fancyhdr}
+	\pagestyle{fancy}
+	\fancyhf{}
+	\fancyhead[C]{\itshape Albania, Cruz, Dela Paz, Landicho, Reyes, Valencia, Yambao}
+	\fancyfoot[C]{\thepage}
+
+%----------------------------------------------------------------
+% REFERENCES
+%----------------------------------------------------------------
+%\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[style=apa,defernumbers=true]{biblatex}
+	%%%%% Input your reference.bib file
+	\addbibresource{reference.bib} %<--filename of your .bib database
+\usepackage[hidelinks]{hyperref}
+
+	
+
+\pagenumbering{roman} %Start roman numbering
+
+
+\begin{document}
+	%Title
+	\thispagestyle{empty}
+	\begin{center}
+		%%%%%%%% Input the title of your exposition paper
+		{\Huge Sectoral Correlation Networks of the Philippine Stock Market: A Minimum Spanning Tree Approach} %<--title of your exposition paper
+		
+		\hspace{12 pt}
+
+		%%%%%%Inpute the names of the authors
+		\mbox{Jemica Albania} \qquad \mbox{Jerusalem Cruz} \qquad \mbox{Jaizel Dela Paz}
+		\qquad \mbox{William James Landicho} \qquad \mbox{Franxine Reyes} \qquad \mbox{Luis Paul Valencia} \qquad \mbox{Lorenz Gerald Yambao}%<--authors name in alphabetical order of the surname
+		
+		\hspace{12 pt}
+		
+		%%%%%%%Input your section and GroupName
+		{\bfseries BSM CS3A - Group 6} %<---course year section & Group Name
+	\end{center}
+	
+	
+	\begin{abstract}
+		This paper examines the network structure and stability of the Philippine Stock Exchange (PSE) during various economic periods namely from pre-pandemic to Covid-19 pandemic downturn. Based on Minimum Spanning Tree (MST) technique, the study constructs six key sectors including Financials, Industrial, Holding Firms, Property, Services, and Mining and Oil to analyse the proximate distance among stocks. Data records were classified as two sets: Batch-A (July 2019 to November 2019) for a stable pre-pandemic market, and Batch-B (December 2019 to May 2020) for a volatile market at the beginning of the pandemic. The results show a dramatic decrease of the market's MST in the pandemic, when volatility and correlations among stocks were escalating. The Mining and Oil and Financial sectors had the biggest drops, signaling the severe uncertainty and economic strain during the crisis. The results give an understanding for fragility of the Philippine financial market and systemic risks in the global health crisis.
+	\end{abstract}
+	
+	
+	\doublespacing
+	\setlength\parindent{.5in}
+	\setlength{\parskip}{0.5\baselineskip}%
+	
+	\pagenumbering{arabic} % Switch to normal numbers
+	\section{Introduction}
+	An Increase in Systemic Risk in the financial system threatens the financial stability. It is defined as the risk of a serious failure occurring in a part or whole of the financial system that is undesirable for the growth of economy or an increase in the vulnerability of the financial system \parencite{hodula2022effect}.
+	
+	There are two dimensions in Systemic Risks in any financial system a cyclical dimension that concerns with the macro-financial imbalances over the financial cycle, while the structural dimension is concerned with the build up of risks caused by the changes in the financial system\parencite{hodula2022effect}.
+	
+	The Covid-19 pandemic and the subsequent Enhanced Community Quarantine has caused grave concern and volatility within the financial markets the Philippine Stock Exchange Index (PSEi) declined to an eight-year low of $ 4,623.42$ points in 19 of March from $7,815.26$ of 31 December of 2019. A temporary increase in lending premiums was observed during that period as the Philippines 10-year bond yields had a slight increase of $5$ percent and eased to $4.5$percent but it remained elevated \parencite{bsp2023unbound}.
+	
+	
+	The first Use of correlation-based networks using graph theory tools was in 1999 by Professor Rosario Mantegna. Where they introduced the usage of minimum spanning tress to model the relationship of United States stocks relative to their industry sectors and reflects the price of the stock beyond historical and current financial standing of the company but also information about its structure and topology \parencite{danko2018}. Minimum spanning tress will be the fundamental component of this exposition as it will be used to describe the structural relationships and potential drastic developments of the tree during the distressing financial market reactions to Covid-19 and ECQ.
+	
+	\section*{Objectives}
+	The main objective of the exposition paper is to implement a minimum spanning tree graph abstracted for the six macro-economic aggregate of the Philippine Stock Exchange or its sectors. This facilitates an exploration on the correlations the sectors had with each other before and during the Covid-19 pandemic that shows the structural risks attained by the drastic change in the financial system it produces. Our main objectives are as follows:
+	\begin{enumerate}
+		
+		\item Select pair of sectors that their correlations are highly different from 2019 stable market and 2020 pandemic unstable market.
+		
+		\item Identify the stable sector pair connections across market regimes that constitute the structural backbone of the sectoral network.
+		
+		\item Evaluate how market regime shifts affect the distance structure of sector correlations using the Minimum Spanning Tree representation.
+		
+	\end{enumerate}
+	
+	\section{Preliminary}
+	\subsection{Mantegna's study on Market Structures}
+	The paper will utilize the 1999 paper of Mantegna in constructing the market structure with MST of the PSEI Composite with some modifications to scale down the technical load associated with reproducing the original paper such as:
+	
+	\textcite{mantegna1999}. Specified that on their data sets they took large samples of the Standard and Poor's 500 index specifying that 443 stocks was picked as the nodes of the MST. This is a very large data sources for an expository paper and the stocks was abstracted towards several economic sectors that is presented by the Philippine Stock Exchange.
+	\subsection{Philippine Stock Exchange Sectors} 
+	Philippine Stock Exchange (PSE) is subdivided to six sectors of stocks these are are: Financials, Industrial, Holding Firms, Property, Services, Mining and Oil. each sector is composed of the companies listed on PSE that is from that sector \parencite{pse2026}. This six sectors will be the data sets to be modeled. 
+	
+	\subsection{Time Frame of the Data}
+	Prior to the Covid-19 pandemic the financial markets was hit during the market condition shift to the pandemic economic dowturn during the December of 2019 towards May of 2020 the six sectors of the PSE generally exhibited substantial downturns with Mining and Oil followed by financials showed the most aggregate decline during the time frame. this timeframe is also an extremely highly volatile point in the market with high uncertainty \parencite{cacnio2020}. This time frame December 2019 to May 2020 will be the pandemic market and the sable pre-pandemic market as July 2019 to November 2019 the details are in \ref{tab:batch_schedule}.
+	
+	\begin{table*}[htpb]
+		\centering
+		\caption{Schedule Comparison for Weekly Intervals by Batch}
+		\label{tab:batch_schedule}
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			\textbf{Batch} & \textbf{Start Date} & \textbf{End Date} \\ \midrule
+			Batch A        & 7-1-2019            & 11-25-2019        \\
+			Batch B        & 12-2-2019           & 5-25-2020         \\ \bottomrule
+		\end{tabular}
+	\end{table*}
+	
+	\subsection{Baseline Graph}
+	As the study aimed to measure the correlation of one sector towards the other a K6 complete weighted graph will be the starting graph to show the relationships each sectors had with the others as shown in \ref{fig:K6_Base} and formally defined such that:
+	$K_6 = (V,E),$ where V are the vertices representing the six PSE sector while E are the edges representing the weight (quantified in correlation coefficient or distance dependent on the stated graph) between two vertices or sectors
+	\begin{figure*}[htbp]
+		\caption{The baseline K6 graph with assumed initial weights of 0.00 for visualization purposes}
+		\label{fig:K6_Base}
+		\includegraphics{CompleteGraph.png}
+	\end{figure*}
+	
+	\subsection{Beyond the Baseline Graph}
+	The original paper utilized the correlation coefficient as the fundamental unit determining similarity between the nodes the formula utilized logarithmic rate of return as its predictors. Then transferred to a series of correlation coefficients over series of time horizons to detect hierarchical structures between the nodes, then a euclidean metric was utilized to determine the relative distances of the nodes with one another in a distance matrix to create the MST \parencite{mantegna1999}. the paper is expected to exhibit these graphs:
+	\begin{enumerate}
+		\item K6 complete graph where edge weights is the batch a correlation coefficient
+		\item K6 complete graph where edge weights is the batch b correlation coefficient
+		\item K6 complete graph where edge weights is the distance between two vertices with batch a correlation coefficient as a predictor variable
+		\item K6 complete graph where edge weights is the distance between two vertices with batch b correlation coefficient as a predictor variable
+		\item Minimum Spanning Tree showing the Market Structures with the edge weights being the distance between two vertices with batch a correlation coefficient as a predictor variable
+		\item Minimum Spanning Tree showing the Market Structures with the edge weights being the distance between two vertices with batch b correlation coefficient as a predictor variable
+	\end{enumerate} 
+	
+	\section{Main Discussion}
+	\subsection{Data Collection}
+	Data collection will be conducted via manual encoding of tabled weekly closing prices data on Trading view. This will be the main data collection methodology of the exposition utilizing the stock tickers from the sector's compositions to make that aggregated node and its statistical makeup and traits.w is a web-based platform that provides advanced charting and analysis tools for traders and investors.It is of the most popular charting platforms, resources and , market data globally, serving millions of users in more than 100 countries \parencite{tradingview}. the table bellow \ref{tab:pse_indices} specifies the all the PSE sectors.
+	
+	\begin{table*}[htbp]
+		\centering
+		\caption{Specifications of PSE Sectoral Indices with Observations}
+		\label{tab:pse_indices}
+		\begin{tabular}{lcccccc}
+			\toprule
+			\textbf{Index} & \textbf{Intervals} & \textbf{Batch} & \textbf{Start Date} & \textbf{End Date} & \textbf{n Observations} \\
+			\midrule
+			Property        & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 05-25-2020 & 26 \\
+			Mining \& Oil   & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 05-25-2020 & 26 \\
+			Industrial      & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 05-25-2020 & 26 \\
+			Financials      & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 05-25-2020 & 26 \\
+			Services        & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 05-25-2020 & 26 \\
+			Holding Firms   & Weekly & First  & 07-01-2019 & 11-25-2019 & 21 \\
+			&        & Second & 12-02-2019 & 04-27-2020 & 26 \\
+			\bottomrule
+		\end{tabular}
+	\end{table*}
+	\subsection{Weighing the edges of the MST}
+	The correlation coefficient is a statistical used to measure the strength and direction of relationship between two variables this degree of relationship can be expressed as 
+	\begin{equation*}
+		p_{ij} = \dfrac{<Y_iY_j> - <Y_i><Y_j>}{\sqrt{(<Y_i^2> - <Y_i>^2)(<Y_j^2> - <Y_j>^2)}}
+	\end{equation*}
+	Where $i$ and $j$ are numerical labels of stocks, $Y_i = lnP_i(t) - lnP_i(t-1)$ as the closure prices of stock i at time horizon $t$ and a correlation matrix is to be made from these numerical evaluation \parencite{mantegna1999}. Mantegna used stocks as the sets of data to be the evaluated but the exposition will use the six sectors of PSEI as the $P_i$ and $P_j$ on evaluating the correlation between them that will be the vital quantity in formulating the edges of the graphs between sector $i$ and $j$ and correlation matrix post evaluation.
+	
+	A correlation coefficient is expected to return a value x such that: $-1 \leq x \leq 1$
+	where if x is positive it means two variables have a degree of positive linear correlation while if it is negative it means two variables have a degree of negative linear correlation. the nearer X is to -1 and 1 the stronger the linear relationship is \parencite{statstutor_pearsons}.
+	
+	\subsection{Categorization of Correlation Coefficient Scores}
+	In order to determine the strength of the relationship of two variables from the computed correlation coefficient a interpretative table must be constructed to determine the threshold of each categories \parencite{statstutor_pearsons}
+	\begin{table*}[ht]
+		\centering
+		\caption{Interpretation of Correlation Coefficients}
+		\label{tab:correlation_scale}
+		\begin{tabular}{ll}
+			\toprule
+			Range & Strength of Relationship \\
+			\midrule
+			.00--.19 & Very weak \\
+			.20--.39 & Weak \\
+			.40--.59 & Moderate \\
+			.60--.79 & Strong \\
+			.80--1.0 & Very strong \\
+			\bottomrule
+		\end{tabular}
+	\end{table*}
+	
+	\subsection{Euclidean Metric and the generalized distance function with the correlation value as its pre-image}
+	The reference study used distance to assign weight to the edges and create a hierarchical organization of nodes the function the original study formulated was:
+	\begin{equation*}
+		d(i,j) = \sqrt{2(1- p_{ij})}
+	\end{equation*}
+	From that distance equation a distance matrix is to be created in order for the MST to be created connecting the nodes given. A MST was chosen to represent the structure due to allowing arrangements of nodes that provides the most relevant relationships of the nodes \parencite{mantegna1999}.
+	\subsection{Kruskal's Algorithm}
+	Kruskal's algorithm provides a way to create the MST from a distance matrix. It process the edges in the order of the weight of their values taking and coloring for the MST each edges that does not form a cycle with past edges added stopping at the last edge that could be possibly added the colored edges forms a forest of trees that will overtime form to a single tree the MST \parencite{sedgewick2011}. This will be the algorithm that will be used to form the MST in the exposition.
+	
+	\subsection{Results}
+	\subsubsection{Batch A}
+	As observed in \ref{tab:correlation_first_batch_sideways} most of the sector pairs exhibit moderate to weak correlation implying with several outliers such as: Industrial and Holding Firms Pairing being at $0.700$ within the range of Strong relationship as shown at \ref{tab:correlation_scale} this shows that during a relatively stable market condition before the Covid-19 pandemic most of the financial markets have their closing prices move independently of one another excluding the outlier Holding Firms - Industrial pairing that has a structural relationship with one another.
+	
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Correlation Matrix First Batch}
+		\label{tab:correlation_first_batch_sideways}
+		\begin{tabular}{lcccccc}
+			\toprule
+			& \textbf{Property} & \textbf{Mining \& Oil} & \textbf{Financials} & \textbf{Holding Firms} & \textbf{Industrial} & \textbf{Services} \\
+			\midrule
+			\textbf{Property}       & 1.000 & 0.290 & 0.400 & 0.427 & 0.448 & 0.206 \\
+			\textbf{Mining \& Oil}  & 0.290 & 1.000 & 0.384 & 0.361 & 0.227 & 0.061 \\
+			\textbf{Financials}     & 0.400 & 0.384 & 1.000 & 0.353 & 0.239 & 0.323 \\
+			\textbf{Holding Firms}  & 0.427 & 0.361 & 0.353 & 1.000 & 0.700 & 0.493 \\
+			\textbf{Industrial}     & 0.448 & 0.227 & 0.239 & 0.700 & 1.000 & 0.515 \\
+			\textbf{Services}       & 0.206 & 0.061 & 0.323 & 0.493 & 0.515 & 1.000 \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Values are Pearson correlation coefficients.
+	\end{sidewaystable*}
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The K6 weighted graph with the weights being $E_{ij}$ for visualization purposes of batch A}
+		\label{fig:K6_Correlation_A}
+		\includegraphics{CompleteGraph_batch_a_corr.png}
+	\end{figure*}
+	
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Distance Matrix First Batch}
+		\label{tab:distance_first_batch_sideways}
+		\begin{tabular}{lcccccc}
+			\toprule
+			& \textbf{Property} & \textbf{Mining \& Oil} & \textbf{Financials} & \textbf{Holding Firms} & \textbf{Industrial} & \textbf{Services} \\
+			\midrule
+			\textbf{Property}       & 0.000 & 1.192 & 1.095 & 1.070 & 1.051 & 1.260 \\
+			\textbf{Mining \& Oil}  & 1.192 & 0.000 & 1.110 & 1.131 & 1.243 & 1.370 \\
+			\textbf{Financials}     & 1.095 & 1.110 & 0.000 & 1.137 & 1.234 & 1.163 \\
+			\textbf{Holding Firms}  & 1.070 & 1.131 & 1.137 & 0.000 & 0.774 & 1.007 \\
+			\textbf{Industrial}     & 1.051 & 1.243 & 1.234 & 0.774 & 0.000 & 0.984 \\
+			\textbf{Services}       & 1.260 & 1.370 & 1.163 & 1.007 & 0.984 & 0.000 \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Pairwise distances between sectors; diagonal entries are zero.
+	\end{sidewaystable*}
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The K6 weighted graph with the weights being $E_{ij}$ for visualization purposes}
+		\label{fig:K6_Distance_A}
+		\includegraphics{CompleteGraph_batch_a_dist.png}
+	\end{figure*}
+	
+	The Minimum Spanning Tree for Batch A the relatively stable market condition before Covid-19 we can see that each vertices has this much degrees:
+	\begin{table*}[htbp]
+		\centering
+		\caption{Batch A Node Degrees and Connections}
+		\label{tab:batch_A_MST}
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Node} & \textbf{Degree} & \textbf{Connections} \\
+			\midrule
+			Industrial & 3 & Holding; Services; Property \\
+			Property & 2 & Industrial; Financials \\
+			Financials & 2 & Property; 	Mining \& Oil \\
+			Holding Firms & 1 & Industrial \\
+			Services & 1 & Industrial \\
+			Mining \& Oil  & 1 & Financials \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Degree equals the number of connections.
+	\end{table*}
+	The table \ref{tab:batch_A_MST} shows the Industrial Sector was a critical sector of the economy that has links to Holding Firms, Services and Property a negative event on the industrial sector will likely produce reactive negative events on other sectors linked to it to the tree. The total weight of the tree is 5.014 showing the market at this time frame is resilient a single vertex failing and influencing other vertices. 
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The Minimum Spanning Tree of Batch A}
+		\label{fig:MST_A}
+		\includegraphics{CompleteGraph_batch_a_dist_mst.png}
+	\end{figure*}
+	
+	
+	\subsubsection{Batch B}
+	As observed in \ref{tab:correlation_second_batch_sideways} all of the sector pairings did show strong correlation with one another as shown at \ref{tab:correlation_scale} this shows that during the Covid-19 pandemic the financial markets experienced a loss of independence in the closing price movements showing how the economic slowdown in one sector caused ripple effects with one another during that time frame.
+	
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Correlation Matrix Second Batch}
+		\label{tab:correlation_second_batch_sideways}
+		\begin{tabular}{lcccccc}
+			\toprule
+			& \textbf{Property} & \textbf{Mining \& Oil} & \textbf{Financials} & \textbf{Holding Firms} & \textbf{Industrial} & \textbf{Services} \\
+			\midrule
+			\textbf{Property}       & 1.000 & 0.868 & 0.844 & 0.920 & 0.807 & 0.873 \\
+			\textbf{Mining \& Oil}  & 0.868 & 1.000 & 0.793 & 0.834 & 0.813 & 0.877 \\
+			\textbf{Financials}     & 0.844 & 0.793 & 1.000 & 0.898 & 0.792 & 0.838 \\
+			\textbf{Holding Firms}  & 0.920 & 0.834 & 0.898 & 1.000 & 0.830 & 0.894 \\
+			\textbf{Industrial}     & 0.807 & 0.813 & 0.792 & 0.830 & 1.000 & 0.811 \\
+			\textbf{Services}       & 0.873 & 0.877 & 0.838 & 0.894 & 0.811 & 1.000 \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Values are Pearson correlation coefficients.
+	\end{sidewaystable*}
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The K6 weighted graph with the weights being $E_{ij}$ for visualization purposes of batch B}
+		\label{fig:K6_Correlation_B}
+		\includegraphics{CompleteGraph_batch_b_corr.png}
+	\end{figure*}
+	
+	
+	
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Distance Matrix Second Batch}
+		\label{tab:distance_second_batch_sideways}
+		\begin{tabular}{lcccccc}
+			\toprule
+			& \textbf{Property} & \textbf{Mining \& Oil} & \textbf{Financials} & \textbf{Holding Firms} & \textbf{Industrial} & \textbf{Services} \\
+			\midrule
+			\textbf{Property}       & 0.000 & 0.513 & 0.559 & 0.400 & 0.621 & 0.504 \\
+			\textbf{Mining \& Oil}  & 0.513 & 0.000 & 0.644 & 0.576 & 0.612 & 0.496 \\
+			\textbf{Financials}     & 0.559 & 0.644 & 0.000 & 0.451 & 0.645 & 0.570 \\
+			\textbf{Holding Firms}  & 0.400 & 0.576 & 0.451 & 0.000 & 0.584 & 0.461 \\
+			\textbf{Industrial}     & 0.621 & 0.612 & 0.645 & 0.584 & 0.000 & 0.615 \\
+			\textbf{Services}       & 0.504 & 0.496 & 0.570 & 0.461 & 0.615 & 0.000 \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Pairwise distances between sectors; diagonal entries are zero.
+	\end{sidewaystable*}
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The K6 weighted graph with the weights being $E_{ij}$ for visualization purposes}
+		\label{fig:K6_Distance_B}
+		\includegraphics{CompleteGraph_batch_B_dist.png}
+	\end{figure*}
+	
+	The Minimum Spanning Tree for Batch B the market condition under Covid-19 has been observed to show the collapse of closing price movements independence of most sectors of the economy as shown in \ref{tab:batch_B_MST} with the convergence of vertices to Holding Firms and general shrinkage of th distances in all pairs.
+	\begin{table*}[htbp]
+		\centering
+		\caption{Batch B Node Degrees and Connections}
+		\label{tab:batch_B_MST}
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Node} & \textbf{Degree} & \textbf{Connections} \\
+			\midrule
+			Holding Firms & 4 & Property; Financials; Services; Industrial \\
+			Services & 2 & Holding; Mining \& Oil \\
+			Property & 1 & Holding \\
+			Financials & 1 & Holding \\
+			Mining \& Oil  & 1 & Services \\
+			Industrial & 1 & Holding \\
+			\bottomrule
+		\end{tabular}
+		
+		\vspace{4pt}
+		\footnotesize\textit{Note.} Degree equals the number of connections.
+	\end{table*}
+	The structural risks posed by Covid-19 on the market exhibits the structural risks as the market conditions have changed from the economy before more loosely anchored to the Industrial Sector as shown in \ref{fig:MST_A} as it is linked to Industrial - Holding Firms, Industrial - Services, and Holding Firms - Property. Then during the Covid-19 pandemic the hub of the market shifted to Holding Firms with 4 sectors highly connected to it as shown by a lower distance to the Holding Firms Vertex. The total weight of the Tree from 5.014 to 2.392 is an observation of how the pandemic coupled the sectors of the economy in the downturn. 
+	
+	
+	\begin{figure*}[htbp]
+		\caption{The Minimum Spanning Tree of Batch B}
+		\label{fig:MST_B}
+		\includegraphics{CompleteGraph_batch_B_dist_mst.png}
+	\end{figure*}
+	
+	\subsection{Discussion}
+	\subsubsection{Difference in the Weight of the Pairs from Batch A to Batch B}
+	As observed in \ref{tab:correlation_delta_sideways_correct} the sector pairings have generally observed a change in the statistical properties of the macro-aggregates towards a more correlated closing prices movements.
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Correlation delta stability ranking}
+		\label{tab:correlation_delta_sideways_correct}
+		\begin{tabular}{@{}l l l r r r@{}}
+			\toprule
+			\textbf{Ranking} & \(\mathbf{Y_i}\) & \(\mathbf{Y_j}\) & \textbf{1st} & \textbf{2nd} & \textbf{Correlation delta (2nd - 1st)} \\
+			\midrule
+			1  & Holding Firms & Industrial    & 0.7001982460202    & 0.829582443189127  & 0.129384196987099  \\
+			2  & Industrial    & Services      & 0.51545110582067   & 0.610939033774568  & 0.0954879279538896 \\
+			3  & Property      & Industrial    & 0.447992040176785  & 0.807056937683122  & 0.3590648975060337 \\
+			4  & Holding Firms & Services      & 0.492793861781693  & 0.893511582460856  & 0.400717720679163  \\
+			5  & Mining \& Oil & Financials    & 0.383701299301501  & 0.792351453124565  & 0.408650153823064  \\
+			6  & Property      & Financials    & 0.400209706618653  & 0.8443600090597    & 0.444150302441047  \\
+			7  & Mining \& Oil & Holding Firms & 0.360936518803715  & 0.834165037135454  & 0.473228518331739  \\
+			8  & Property      & Holding Firms & 0.427268116077046  & 0.91999876756378   & 0.492721652499933  \\
+			9  & Financials    & Services      & 0.323369899142289  & 0.837812766160292  & 0.514442866017993  \\
+			10 & Financials    & Holding Firms & 0.353455367041858  & 0.898150007826343  & 0.54469464078476   \\
+			11 & Financials    & Industrial    & 0.2238385004573    & 0.779147698117221  & 0.555309197659921  \\
+			12 & Property      & Mining \& Oil & 0.289601069375887  & 0.868429764365171  & 0.578828694989284  \\
+			13 & Mining \& Oil & Industrial    & 0.226559386810869  & 0.812976253396536  & 0.586120134758668  \\
+			14 & Property      & Services      & 0.206448774428638  & 0.873611342066599  & 0.667162567637961  \\
+			15 & Mining \& Oil & Services      & 0.0610828771384807 & 0.876838376569595  & 0.815755499431115  \\
+			\bottomrule
+		\end{tabular}
+	\end{sidewaystable*}
+	To attain which sector parings had the most dramatic shift among the observations we will use the third quartile to give us the sector pairs that had the most dramatic changes. 
+	
+	The quartile formula is used to divide groups into quarters the quartile formula to attain the third quartile is: 
+	\begin{equation*}
+		\frac{3(n + 1)}{4} = threshold term
+	\end{equation*}
+	and allow us to see the group of correlation deltas that has shifted the most dramatically within the whole group \parencite{quartiles_siesce}
+	
+	which give us the $12th$ term at \ref{tab:correlation_delta_sideways_correct} which is: $correlation delta \geq 0.578828694989285$ and the sector pairs that met this threshold are: Property - Mining \& Oil, Mining \& Oil - Industrial, Property - Services, and Mining \& Oil - Services. This observations might imply that Mining \& oil is particularly vulnerable sector when market regimes shifts. And satisfies the objective 1's goal of finding the sector pairs that have the most different correlations from batch A to batch B.
+	
+	
+	\subsubsection{Structural Backbone of the sectors}
+	As observed in the \ref{tab:batch_A_MST} and \ref{tab:batch_B_MST} the Holding Firms - Industrial sector pairing is the Structural hub that many sectors are structurally linked. This highly resilient sector pairings might reflect a more structural couplings of the two as holding firms had many assets in the industrial sectors of the country.
+	
+	\subsubsection{Observation on the Distances between the Batch A and Batch B and how Covid-19 affected the financial market}
+	We can see a dramatic contraction of distances between the the first batch batch A and second batch batch B as all distance delta is negative showing that the $d_{batch A}(i_{batch A},j_{batch_a}) > d_{batch_b}(i_{batch_B},j_{batch_B})$ indicating that the closing price movements of each sector lost a degree of statistical independence and became more correlated with one another as total distance of \ref{fig:MST_A} is 5.014 and the distance of \ref{fig:MST_B} is 2.392 showing that the Covid-19 pandemic and ECQ has disrupted the financial markets gravely.
+	\begin{sidewaystable*}[htbp]
+		\centering
+		\caption{Distance delta stability ranking}
+		\label{tab:distance_delta_sideways}
+		\begin{tabular}{@{}l l l r r r@{}}
+			\toprule
+			\textbf{Ranking} & \(\mathbf{Y_i}\) & \(\mathbf{Y_j}\) & \textbf{1st} & \textbf{2nd} & \textbf{Distance delta (2nd - 1st)} \\
+			\midrule
+			1  & Holding Firms & Industrial    & 0.774340692199464 & 0.583810854319913 & -0.190529837879551 \\
+			2  & Industrial    & Services      & 0.984427645060143 & 0.614916199535242 & -0.369511445524902 \\
+			3  & Property      & Industrial    & 1.05072161853006  & 0.621197331476687 & -0.429524287053374 \\
+			4  & Mining \& Oil & Financials    & 1.11022403207506  & 0.64415601967755  & -0.466067922307509 \\
+			5  & Property      & Financials    & 1.09519770523668  & 0.559283459420003 & -0.535896245816677 \\
+			6  & Holding Firms & Services      & 1.00718035934783  & 0.461494133308863 & -0.545686226038967 \\
+			7  & Mining \& Oil & Holding Firms & 1.13054277335825  & 0.575907914278905 & -0.554634859079345 \\
+			8  & Financials    & Industrial    & 1.23381485630511  & 0.645061750300756 & -0.588753151004355 \\
+			9  & Financials    & Services      & 1.16329704891162  & 0.56953882016893  & -0.593758227715689 \\
+			10 & Mining \& Oil & Industrial    & 1.24349894408407  & 0.611594222717096 & -0.631904117366976 \\
+			11 & Property      & Holding Firms & 1.07026341066184  & 0.400082200872802 & -0.670181209789038 \\
+			12 & Property      & Mining \& Oil & 1.19197225629161  & 0.51297219346633  & -0.679000062845812 \\
+			13 & Financials    & Holding Firms & 1.13054277335825  & 0.451331465311635 & -0.679211226846593 \\
+			14 & Property      & Services      & 1.25980254446201  & 0.503659874275192 & -0.756142670186818 \\
+			15 & Mining \& Oil & Services      & 1.37034092317315  & 0.614916199535242 & -0.755524723637907 \\
+			\bottomrule
+		\end{tabular}
+	\end{sidewaystable*}
+	
+	Notable Sectors that has exhibited stability here are: Holding Firms - Industrial as with delta of $-0.190$ in distance from one another in MST of the same edge is remarked as the most resilient edge despite the market shock.With Industrial - Services being the next most stable edge with a distance delta of $-0.369$ followed by Property - Industrial and Mining \& Oil - Financials bearing a delta that is $-0.399 \leq x \leq -0.500$ indicating that sector pairings involving the industrial sector maintained relatively stable structural distances across both market regimes implying a level of structural resilience that Covid 19 pandemic failed to disrupt significantly.
+	
+	
+	
+	\printbibliography[heading=bibintoc]
+	
+	\section*{Appendix}
+		\begin{xltabular}{\linewidth}{>{\raggedright\arraybackslash}l
+			*{5}{>{\centering\arraybackslash}X}}{@{}l r r r r@{}}
+			\caption{Table 1\\PSE Property Index — weekly closing prices and log values}
+			\label{tab:property-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{l}{\textbf{Table \thetable}\ (\textit{continued})}\\
+			\addlinespace[12pt]
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{r}{{Continued on next page}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			7/1/2019  & 4,379.75 & 8.384746924 &  &  \\ 
+			7/8/2019  & 4,423.93 & 8.394787366 & 8.394787366 & 0.010038641 \\ 
+			7/15/2019 & 4,425.37 & 8.394702296 & 8.394702296 & -0.000085070 \\ 
+			7/22/2019 & 4,347.09 & 8.377761898 & 8.377761898 & -0.016940398 \\ 
+			7/29/2019 & 4,103.24 & 8.319187811 & 8.319187811 & -0.058574087 \\ 
+			8/5/2019  & 4,100.02 & 8.318747131 & 8.318747131 & -0.053189048 \\ 
+			8/12/2019 & 4,036.97 & 8.303249690 & 8.303249690 & -0.015497441 \\ 
+			8/19/2019 & 4,016.69 & 8.298213434 & 8.298213434 & -0.005036255 \\ 
+			8/26/2019 & 3,998.00 & 8.293549515 & 8.293549515 & -0.004663919 \\ 
+			9/2/2019  & 4,050.97 & 8.306711638 & 8.306711638 & 0.013162123 \\ 
+			9/9/2019  & 4,064.08 & 8.309942699 & 8.309942699 & 0.003231061 \\ 
+			9/16/2019 & 3,985.76 & 8.290483288 & 8.290483288 & -0.019459410 \\ 
+			9/23/2019 & 4,068.62 & 8.311059179 & 8.311059179 & 0.020575891 \\ 
+			9/30/2019 & 4,010.90 & 8.296770909 & 8.296770909 & -0.014288270 \\ 
+			10/7/2019 & 4,129.68 & 8.325955250 & 8.325955250 & 0.029184340 \\ 
+			10/14/2019 & 4,177.25 & 8.337408414 & 8.337408414 & 0.011453165 \\ 
+			10/21/2019 & 4,166.29 & 8.334781231 & 8.334781231 & -0.002627184 \\ 
+			10/28/2019 & 4,172.29 & 8.336220325 & 8.336220325 & 0.001439094 \\ 
+			11/4/2019  & 4,170.89 & 8.335884745 & 8.335884745 & -0.000335579 \\ 
+			11/11/2019 & 4,119.84 & 8.323569558 & 8.323569558 & -0.012315187 \\ 
+			11/18/2019 & 4,033.22 & 8.302320343 & 8.302320343 & -0.021249215 \\ 
+			11/25/2019 & 4,043.60 & 8.304890688 & 8.304890688 & 0.002570345 \\ 
+			
+			\addlinespace
+			12/2/2019  & 4,099.88 & 8.318712960 & 8.318712960 & 0.013822272 \\ 
+			12/9/2019  & 4,193.94 & 8.341395881 & 8.341395881 & 0.022682922 \\ 
+			12/16/2019 & 4,139.54 & 8.328339950 & 8.328339950 & -0.013055932 \\ 
+			12/23/2019 & 4,154.52 & 8.331952177 & 8.331952177 & 0.003612228 \\ 
+			12/30/2019 & 4,173.67 & 8.336551000 & 8.336551000 & 0.004598823 \\ 
+			1/6/2020   & 4,112.34 & 8.321747440 & 8.321747440 & -0.014803560 \\ 
+			1/13/2020  & 4,035.78 & 8.302954871 & 8.302954871 & -0.018792569 \\ 
+			1/20/2020  & 3,962.32 & 8.284585017 & 8.284585017 & -0.018369854 \\ 
+			1/27/2020  & 3,838.74 & 8.252899467 & 8.252899467 & -0.031685550 \\ 
+			2/3/2020   & 4,036.80 & 8.303207578 & 8.303207578 & 0.050308111 \\ 
+			2/10/2020  & 3,928.65 & 8.276051109 & 8.276051109 & -0.027156469 \\ 
+			2/17/2020  & 3,944.75 & 8.280140860 & 8.280140860 & 0.004089751 \\ 
+			2/24/2020  & 3,633.18 & 8.197863549 & 8.197863549 & -0.082277311 \\ 
+			3/2/2020   & 3,684.87 & 8.211990553 & 8.211990553 & 0.014127004 \\ 
+			3/9/2020   & 2,985.40 & 8.001488987 & 8.001488987 & -0.210501566 \\ 
+			3/16/2020  & 2,468.33 & 7.811297128 & 7.811297128 & -0.190191859 \\ 
+			3/23/2020  & 2,781.15 & 7.930619754 & 7.930619754 & 0.119322626 \\ 
+			3/30/2020  & 2,824.16 & 7.945966219 & 7.945966219 & 0.015346465 \\ 
+			4/6/2020   & 2,838.40 & 7.950995757 & 7.950995757 & 0.005029538 \\ 
+			4/13/2020  & 2,963.69 & 7.994190359 & 7.994190359 & 0.043194602 \\ 
+			4/20/2020  & 2,715.46 & 7.906716647 & 7.906716647 & -0.087473712 \\ 
+			4/27/2020  & 2,921.92 & 7.979996179 & 7.979996179 & 0.073279532 \\ 
+			5/4/2020   & 2,934.97 & 7.984452511 & 7.984452511 & 0.004456332 \\ 
+			5/11/2020  & 2,838.40 & 7.950995757 & 7.950995757 & -0.033456754 \\ 
+			5/18/2020  & 2,815.65 & 7.942948384 & 7.942948384 & -0.008047373 \\ 
+			5/25/2020  & 2,785.90 &  & 7.932326224 & -0.010622216 \\ 
+			
+		\end{xltabular}
+		
+		\bigskip
+		\noindent\textit{Note.} Specifications: name = PSE Property Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3APRO}.
+	
+	
+	\begin{xltabular}{\linewidth}{>{\raggedright\arraybackslash}l
+			*{5}{>{\centering\arraybackslash}X}}
+			\caption{PSE Mining \& Oil Index — weekly closing prices and log values}\label{tab:mining-oil-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{l}{\textbf{Table \thetable}\ (\textit{continued})}\\
+			\addlinespace[12pt]
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{l}{\textit{Continued on next page.}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			2019-07-01 & 7,439.29 & 8.914530693 &  &  \\ 
+			2019-07-08 & 7,437.16 & 8.914244335 & 8.914244335 & -0.000286359 \\ 
+			2019-07-15 & 8,126.27 & 9.002857303 & 9.002857303 & 0.088612968 \\ 
+			2019-07-22 & 7,870.97 & 8.970936587 & 8.970936587 & -0.031920716 \\ 
+			2019-07-29 & 8,101.47 & 8.999800806 & 8.999800806 & 0.028864219 \\ 
+			2019-08-05 & 8,152.22 & 9.006045562 & 9.006045562 & 0.006244756 \\ 
+			2019-08-12 & 8,051.19 & 8.993575186 & 8.993575186 & -0.012470376 \\ 
+			2019-08-19 & 8,074.00 & 8.996404301 & 8.996404301 & 0.002829116 \\ 
+			2019-08-26 & 8,250.52 & 9.018031508 & 9.018031508 & 0.021627206 \\ 
+			2019-09-02 & 9,269.45 & 9.134479326 & 9.134479326 & 0.116447818 \\ 
+			2019-09-09 & 9,591.46 & 9.168628398 & 9.168628398 & 0.034149073 \\ 
+			2019-09-16 & 9,375.03 & 9.145805051 & 9.145805051 & -0.022823347 \\ 
+			2019-09-23 & 8,968.40 & 9.101462567 & 9.101462567 & -0.044342484 \\ 
+			2019-09-30 & 8,843.07 & 9.087389380 & 9.087389380 & -0.014073186 \\ 
+			2019-10-07 & 9,178.36 & 9.124603818 & 9.124603818 & 0.037214438 \\ 
+			2019-10-14 & 8,907.35 & 9.094632058 & 9.094632058 & -0.029971761 \\ 
+			2019-10-21 & 9,209.23 & 9.127961521 & 9.127961521 & 0.033329463 \\ 
+			2019-10-28 & 9,216.52 & 9.128752805 & 9.128752805 & 0.000791284 \\ 
+			2019-11-04 & 9,092.61 & 9.115217275 & 9.115217275 & -0.013535530 \\ 
+			2019-11-11 & 8,742.14 & 9.075910290 & 9.075910290 & -0.039306985 \\ 
+			2019-11-18 & 8,175.43 & 9.008888594 & 9.008888594 & -0.067021696 \\ 
+			2019-11-25 & 8,054.07 & 8.993932833 & 8.993932833 & -0.014955761 \\ 
+			
+			\addlinespace
+			2019-12-02 & 7,517.51 & 8.924990245 & 8.924990245 & -0.068942588 \\ 
+			2019-12-09 & 7,521.46 & 8.925515547 & 8.925515547 & 0.000525302 \\ 
+			2019-12-16 & 7,586.74 & 8.934157266 & 8.934157266 & 0.008641719 \\ 
+			2019-12-23 & 8,091.98 & 8.998628727 & 8.998628727 & 0.064471461 \\ 
+			2019-12-30 & 8,020.76 & 8.989788459 & 8.989788459 & -0.008840267 \\ 
+			2020-01-06 & 8,107.64 & 9.000562106 & 9.000562106 & 0.010773647 \\ 
+			2020-01-13 & 8,143.53 & 9.004979026 & 9.004979026 & 0.004416920 \\ 
+			2020-01-20 & 7,968.19 & 8.983212644 & 8.983212644 & -0.021766382 \\ 
+			2020-01-27 & 7,663.26 & 8.944192760 & 8.944192760 & -0.039019885 \\ 
+			2020-02-03 & 7,383.47 & 8.906998997 & 8.906998997 & -0.037193763 \\ 
+			2020-02-10 & 7,058.64 & 8.862007677 & 8.862007677 & -0.044991319 \\ 
+			2020-02-17 & 7,086.90 & 8.866003288 & 8.866003288 & 0.003995611 \\ 
+			2020-02-24 & 6,451.44 & 8.772058641 & 8.772058641 & -0.093944648 \\ 
+			2020-03-02 & 6,281.71 & 8.745397515 & 8.745397515 & -0.026661125 \\ 
+			2020-03-09 & 4,727.81 & 8.461217372 & 8.461217372 & -0.284180143 \\ 
+			2020-03-16 & 3,745.47 & 8.228302389 & 8.228302389 & -0.232914983 \\ 
+			2020-03-23 & 4,102.47 & 8.319344510 & 8.319344510 & 0.091042122 \\ 
+			2020-03-30 & 4,261.87 & 8.357463310 & 8.357463310 & 0.038118800 \\ 
+			2020-04-06 & 4,320.96 & 8.371232879 & 8.371232879 & 0.013769569 \\ 
+			2020-04-13 & 4,688.22 & 8.452808258 & 8.452808258 & 0.081575380 \\ 
+			2020-04-20 & 4,592.45 & 8.432168930 & 8.432168930 & -0.020639329 \\ 
+			2020-04-27 & 4,708.57 & 8.457139532 & 8.457139532 & 0.024970602 \\ 
+			2020-05-04 & 4,520.85 & 8.416455308 & 8.416455308 & -0.040684223 \\ 
+			2020-05-11 & 4,505.48 & 8.413049713 & 8.413049713 & -0.003405596 \\ 
+			2020-05-18 & 4,465.27 & 8.404084962 & 8.404084962 & -0.008964751 \\ 
+			2020-05-25 & 4,362.72 &  & 8.380850995 & -0.023233967 \\ 
+			
+		\end{xltabular}
+	
+	\bigskip
+	\noindent\textit{Note.} Specifications: name = PSE Mining \& Oil Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3AM_O}.
+	
+		\begin{xltabular}{>{\raggedright\arraybackslash}l
+			*{5}{>{\centering\arraybackslash}X}}
+			\caption{PSE Industrial Index — weekly closing prices and log values}
+			\label{tab:industrial-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{l}{\textbf{Table \thetable}\ (\textit{continued})}\\
+			\addlinespace[12pt]
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{l}{\textit{Continued on next page.}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			2019-07-01 & 11,988.32 & 9.391688121 & 9.391688180 & 0.000000059 \\
+			2019-07-08 & 11,791.25 & 9.375113010 & 9.375113010 & -0.016575111 \\
+			2019-07-15 & 11,467.74 & 9.367745750 & 9.367745750 & -0.007367260 \\
+			2019-07-22 & 11,704.70 & 9.347293155 & 9.347293155 & -0.020452959 \\
+			2019-07-29 & 11,412.13 & 9.342432104 & 9.342432104 & -0.004861051 \\
+			2019-08-05 & 10,804.27 & 9.287696705 & 9.287696705 & -0.054735988 \\
+			2019-08-12 & 10,844.32 & 9.291396772 & 9.291396772 & 0.003700014 \\
+			2019-08-19 & 10,997.00 & 9.303777870 & 9.303777870 & 0.013981068 \\
+			2019-08-26 & 11,126.30 & 9.317066954 & 9.317066954 & 0.011689167 \\
+			2019-09-02 & 10,915.02 & 9.297895101 & 9.297895101 & -0.019171853 \\
+			2019-09-09 & 11,011.94 & 9.306738419 & 9.306738419 & 0.008840316 \\
+			2019-09-16 & 10,938.94 & 9.300084178 & 9.300084178 & -0.006651239 \\
+			2019-09-23 & 10,556.72 & 9.264517903 & 9.264517903 & -0.035566276 \\
+			2019-09-30 & 10,477.26 & 9.256962473 & 9.256962473 & -0.007555430 \\
+			2019-10-07 & 10,677.38 & 9.275882764 & 9.275882764 & 0.018920291 \\
+			2019-10-14 & 10,643.01 & 9.272658618 & 9.272658618 & -0.003224146 \\
+			2019-10-21 & 10,470.07 & 9.256275990 & 9.256275990 & -0.016382628 \\
+			2019-10-28 & 10,470.94 & 9.256559008 & 9.256559008 & 0.000083095 \\
+			2019-11-04 & 10,478.33 & 9.257064594 & 9.257064594 & 0.000705514 \\
+			2019-11-11 & 10,082.34 & 9.218540658 & 9.218540658 & -0.038523936 \\
+			2019-11-18 & 9,911.62 & 9.201643095 & 9.201643095 & -0.017075620 \\
+			2019-11-25 & 9,781.29 & 9.188226656 & 9.188226656 & -0.013263439 \\
+			
+			\addlinespace
+			2019-12-02 & 9,555.43 & 9.164864827 & 9.164864827 & -0.023361829 \\
+			2019-12-09 & 9,722.08 & 9.182154877 & 9.182154877 & 0.017290050 \\
+			2019-12-16 & 9,367.59 & 9.145011117 & 9.145011117 & -0.037143760 \\
+			2019-12-23 & 9,635.07 & 9.173164877 & 9.173164877 & 0.028153760 \\
+			2019-12-30 & 9,684.14 & 9.178244733 & 9.178244733 & 0.005079856 \\
+			2020-01-06 & 9,364.48 & 9.144679141 & 9.144679141 & -0.033565593 \\
+			2020-01-13 & 9,477.42 & 9.156667396 & 9.156667396 & 0.011988225 \\
+			2020-01-20 & 9,728.72 & 9.182837584 & 9.182837584 & 0.026170188 \\
+			2020-01-27 & 8,921.44 & 9.096212692 & 9.096212692 & -0.086624891 \\
+			2020-02-03 & 9,391.68 & 9.147579438 & 9.147579438 & 0.051366746 \\
+			2020-02-10 & 8,936.64 & 9.097914914 & 9.097914914 & -0.049664524 \\
+			2020-02-17 & 8,987.08 & 9.103453280 & 9.103453280 & 0.005628367 \\
+			2020-02-24 & 8,351.48 & 9.030194108 & 9.030194108 & -0.073349173 \\
+			2020-03-02 & 8,114.07 & 9.001354846 & 9.001354846 & -0.028839261 \\
+			2020-03-09 & 7,071.11 & 8.863772734 & 8.863772734 & -0.137582112 \\
+			2020-03-16 & 6,022.65 & 8.703282624 & 8.703282624 & -0.160490110 \\
+			2020-03-23 & 6,204.54 & 8.733065610 & 8.733065610 & 0.029753937 \\
+			2020-03-30 & 6,433.97 & 8.769347076 & 8.769347076 & 0.036310515 \\
+			2020-04-06 & 7,073.16 & 8.864062646 & 8.864062646 & 0.094715570 \\
+			2020-04-13 & 7,566.82 & 8.931528512 & 8.931528512 & 0.067465506 \\
+			2020-04-20 & 7,209.48 & 8.883152106 & 8.883152106 & -0.048376047 \\
+			2020-04-27 & 7,474.93 & 8.919310060 & 8.919310060 & 0.036157955 \\
+			2020-05-04 & 7,326.79 & 8.899292773 & 8.899292773 & -0.020017288 \\
+			2020-05-11 & 7,506.67 & 8.935472724 & 8.935472724 & 0.024552452 \\
+			2020-05-18 & 7,304.81 & 8.896288328 & 8.896288328 & -0.027258896 \\
+			2020-05-25 & 7,311.09 & 8.897147625 & 8.897147625 & 0.000859297 \\
+			
+		\end{longtable}
+	
+	\bigskip
+	\noindent\textit{Note.} Specifications: name = PSE Industrial Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3AIND}.
+	
+		\begin{longtable}{\linewidth}{>{\raggedright\arraybackslash}l
+			*{5}{>{\centering\arraybackslash}X}}
+			\caption{PSE Financials Index — weekly closing prices and log values}\label{tab:financials-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{l}{\textbf{Table \thetable}\ (\textit{continued})}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{r}{{Continued on next page}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			2019-07-01 & 1,742.01 & 7.462794898 & 7.462794898 & - \\
+			2019-07-08 & 1,788.79 & 7.489294693 & 7.489294693 & 0.026499795 \\
+			2019-07-15 & 1,877.28 & 7.537579200 & 7.537579200 & 0.048284507 \\
+			2019-07-22 & 1,848.49 & 7.522124369 & 7.522124369 & -0.015454831 \\
+			2019-07-29 & 1,861.40 & 7.529084172 & 7.529084172 & 0.006959803 \\
+			2019-08-05 & 1,851.60 & 7.523805409 & 7.523805409 & -0.005278763 \\
+			2019-08-12 & 1,779.29 & 7.483969887 & 7.483969887 & -0.039835722 \\
+			2019-08-19 & 1,827.12 & 7.510496236 & 7.510496236 & 0.026526348 \\
+			2019-08-26 & 1,833.28 & 7.513861991 & 7.513861991 & 0.003365756 \\
+			2019-09-02 & 1,804.17 & 7.497855931 & 7.497855931 & -0.016006006 \\
+			2019-09-09 & 1,832.62 & 7.513501916 & 7.513501916 & 0.015645885 \\
+			2019-09-16 & 1,786.58 & 7.488058457 & 7.488058457 & -0.025445349 \\
+			2019-09-23 & 1,803.55 & 7.497512224 & 7.497512224 & 0.009453767 \\
+			2019-09-30 & 1,805.59 & 7.498642868 & 7.498642868 & 0.001130644 \\
+			2019-10-07 & 1,821.17 & 7.507234431 & 7.507234431 & 0.008591744 \\
+			2019-10-14 & 1,841.26 & 7.518205999 & 7.518205999 & 0.010970698 \\
+			2019-10-21 & 1,876.79 & 7.537318154 & 7.537318154 & 0.019112751 \\
+			2019-10-28 & 1,918.40 & 7.559246784 & 7.559246784 & 0.021928630 \\
+			2019-11-04 & 1,946.75 & 7.573916594 & 7.573916594 & 0.014669810 \\
+			2019-11-11 & 1,920.85 & 7.560523075 & 7.560523075 & -0.013393519 \\
+			2019-11-18 & 1,874.13 & 7.535899831 & 7.535899831 & -0.024623245 \\
+			2019-11-25 & 1,841.80 & 7.518498633 & 7.518498633 & -0.017401197 \\
+			
+			\addlinespace
+			2019-12-02 & 1,874.61 & 7.536155917 & 7.536155917 & 0.017657283 \\
+			2019-12-09 & 1,903.17 & 7.551276196 & 7.551276196 & 0.015120279 \\
+			2019-12-16 & 1,843.16 & 7.519236769 & 7.519236769 & -0.032094270 \\
+			2019-12-23 & 1,863.65 & 7.530292209 & 7.530292209 & 0.011055440 \\
+			2019-12-30 & 1,844.48 & 7.519956274 & 7.519956274 & -0.010339535 \\
+			2020-01-06 & 1,827.52 & 7.510715135 & 7.510715135 & -0.009237538 \\
+			2020-01-13 & 1,846.91 & 7.521269251 & 7.521269251 & 0.010554116 \\
+			2020-01-20 & 1,810.37 & 7.501865623 & 7.501865623 & -0.019982728 \\
+			2020-01-27 & 1,724.93 & 7.452941749 & 7.452941749 & -0.048344774 \\
+			2020-02-03 & 1,791.09 & 7.490579652 & 7.490579652 & 0.037637903 \\
+			2020-02-10 & 1,738.95 & 7.461036762 & 7.461036762 & -0.029542890 \\
+			2020-02-17 & 1,738.92 & 7.461019510 & 7.461019510 & -0.0000172519 \\
+			2020-02-24 & 1,605.99 & 7.381495668 & 7.381495668 & -0.079523842 \\
+			2020-03-02 & 1,596.23 & 7.375399878 & 7.375399878 & -0.006095790 \\
+			2020-03-09 & 1,415.66 & 7.255351132 & 7.255351132 & -0.120042845 \\
+			2020-03-16 & 1,163.69 & 7.059351270 & 7.059351270 & -0.195999863 \\
+			2020-03-23 & 1,212.28 & 7.104374140 & 7.104374140 & 0.045022871 \\
+			2020-03-30 & 1,183.78 & 7.076467987 & 7.076467987 & -0.027906153 \\
+			2020-04-06 & 1,157.37 & 7.059054669 & 7.059054669 & -0.022652519 \\
+			2020-04-13 & 1,235.72 & 7.119409075 & 7.119409075 & 0.065503606 \\
+			2020-04-20 & 1,188.69 & 7.080607139 & 7.080607139 & -0.038801936 \\
+			2020-04-27 & 1,188.67 & 7.080590314 & 7.080590314 & -0.0000168254 \\
+			2020-05-04 & 1,148.08 & 7.045846261 & 7.045846261 & -0.034744053 \\
+			2020-05-11 & 1,129.40 & 7.029441797 & 7.029441797 & -0.016404464 \\
+			2020-05-18 & 1,102.50 & 7.005335607 & 7.005335607 & -0.024106190 \\
+			2020-05-25 & 1,176.42 & 7.070231208 & 7.070231208 & 0.064895600 \\
+			
+		\end{longtable}
+	\end{center}
+	
+	\bigskip
+	\noindent\textit{Note.} Specifications: name = PSE Financials Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3AFIN}.
+	
+	
+	\begin{center}
+		\begin{longtable}{@{}l r r r r@{}}
+			\caption{Table 1\\PSE Services Index — weekly closing prices and log values}\label{tab:services-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{c}{{\bfseries Table 1 (continued)}}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{r}{{Continued on next page}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			2019-07-01 & 1,695.66 & 7.435827325 & 7.435827325 & - \\
+			2019-07-08 & 1,693.65 & 7.434641242 & 7.434641242 & -0.001186082 \\
+			2019-07-15 & 1,681.71 & 7.427566412 & 7.427566412 & -0.007074830 \\
+			2019-07-22 & 1,651.90 & 7.409681420 & 7.409681420 & -0.017884992 \\
+			2019-07-29 & 1,613.12 & 7.385925471 & 7.385925471 & -0.023755949 \\
+			2019-08-05 & 1,591.59 & 7.372488796 & 7.372488796 & -0.013436675 \\
+			2019-08-12 & 1,568.85 & 7.358098164 & 7.358098164 & -0.014390632 \\
+			2019-08-19 & 1,589.89 & 7.371420110 & 7.371420110 & 0.013321946 \\
+			2019-08-26 & 1,623.75 & 7.392493568 & 7.392493568 & 0.021073458 \\
+			2019-09-02 & 1,594.99 & 7.374622746 & 7.374622746 & -0.017870822 \\
+			2019-09-09 & 1,623.61 & 7.392407344 & 7.392407344 & 0.017784598 \\
+			2019-09-16 & 1,588.84 & 7.370759469 & 7.370759469 & -0.021647875 \\
+			2019-09-23 & 1,544.02 & 7.342144684 & 7.342144684 & -0.028614785 \\
+			2019-09-30 & 1,510.64 & 7.320288681 & 7.320288681 & -0.021856003 \\
+			2019-10-07 & 1,526.32 & 7.330614888 & 7.330614888 & 0.010326207 \\
+			2019-10-14 & 1,530.25 & 7.333186400 & 7.333186400 & 0.002571512 \\
+			2019-10-21 & 1,531.53 & 7.334022515 & 7.334022515 & 0.000836115 \\
+			2019-10-28 & 1,513.05 & 7.321882760 & 7.321882760 & -0.012139755 \\
+			2019-11-04 & 1,551.96 & 7.347273927 & 7.347273927 & 0.025391167 \\
+			2019-11-11 & 1,547.47 & 7.344376618 & 7.344376618 & -0.002897309 \\
+			2019-11-18 & 1,549.70 & 7.345816643 & 7.345816643 & 0.001440025 \\
+			2019-11-25 & 1,546.48 & 7.343736660 & 7.343736660 & -0.002079983 \\
+			
+			\addlinespace
+			2019-12-02 & 1,499.35 & 7.312786960 & 7.312786960 & -0.030949700 \\
+			2019-12-09 & 1,525.19 & 7.329874271 & 7.329874271 & 0.017087312 \\
+			2019-12-16 & 1,533.34 & 7.335203642 & 7.335203642 & 0.005329371 \\
+			2019-12-23 & 1,531.10 & 7.333747171 & 7.333747171 & -0.001456471 \\
+			2019-12-30 & 1,547.27 & 7.344274737 & 7.344274737 & 0.010527565 \\
+			2020-01-06 & 1,555.66 & 7.349655172 & 7.349655172 & 0.005380435 \\
+			2020-01-13 & 1,564.02 & 7.355014709 & 7.355014709 & 0.005359537 \\
+			2020-01-20 & 1,544.66 & 7.342559100 & 7.342559100 & -0.012455608 \\
+			2020-01-27 & 1,475.16 & 7.296521737 & 7.296521737 & -0.046037363 \\
+			2020-02-03 & 1,502.87 & 7.315318920 & 7.315318920 & 0.018797183 \\
+			2020-02-10 & 1,440.30 & 7.272606704 & 7.272606704 & -0.042712216 \\
+			2020-02-17 & 1,444.81 & 7.275733104 & 7.275733104 & 0.003126399 \\
+			2020-02-24 & 1,351.38 & 7.208885172 & 7.208885172 & -0.066847932 \\
+			2020-03-02 & 1,330.54 & 7.193340154 & 7.193340154 & -0.015545018 \\
+			2020-03-09 & 1,187.61 & 7.079698163 & 7.079698163 & -0.113641991 \\
+			2020-03-16 & 1,037.71 & 6.944771641 & 6.944771641 & -0.134926522 \\
+			2020-03-23 & 1,177.27 & 7.070953478 & 7.070953478 & 0.126181837 \\
+			2020-03-30 & 1,188.90 & 7.080783789 & 7.080783789 & 0.009830311 \\
+			2020-04-06 & 1,222.24 & 7.108440520 & 7.108440520 & 0.027656731 \\
+			2020-04-13 & 1,294.84 & 7.166424140 & 7.166424140 & 0.057983620 \\
+			2020-04-20 & 1,300.57 & 7.170557909 & 7.170557909 & 0.004133769 \\
+			2020-04-27 & 1,373.82 & 7.225350460 & 7.225350460 & 0.054792551 \\
+			2020-05-04 & 1,322.68 & 7.187415260 & 7.187415260 & -0.037935200 \\
+			2020-05-11 & 1,314.04 & 7.180861640 & 7.180861640 & -0.006553620 \\
+			2020-05-18 & 1,322.13 & 7.186999351 & 7.186999351 & 0.006137711 \\
+			2020-05-25 & 1,362.44 & 7.217032489 & 7.217032489 & 0.030033138 \\
+			
+		\end{longtable}
+	\end{center}
+	
+	\bigskip
+	\noindent\textit{Note.} Specifications: name = PSE Services Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3ASVC}.
+	
+	\begin{center}
+		\begin{longtable}{@{}l r r r r@{}}
+			\caption{Table 1\\PSE Holding Firms Index — weekly closing prices and log values}\label{tab:holding-firms-apa}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endfirsthead
+			
+			\multicolumn{5}{c}{{\bfseries Table 1 (continued)}}\\
+			\toprule
+			\textbf{Date} & \textbf{Closing price} & \textbf{$\ln p_{t-1}$} & \textbf{$\ln p_{t}$} & \textbf{$\ln p_{t}-\ln p_{t-1}$} \\
+			\midrule
+			\endhead
+			
+			\midrule
+			\multicolumn{5}{r}{{Continued on next page}} \\
+			\endfoot
+			
+			\bottomrule
+			\endlastfoot
+			
+			2019-07-01 & 7,797.21 & 8.961521256 &  & - \\
+			2019-07-08 & 7,758.23 & 8.956509949 & 8.956509949 & -0.005011762 \\
+			2019-07-15 & 7,942.92 & 8.980036232 & 8.980036232 & 0.023526278 \\
+			2019-07-22 & 7,999.12 & 8.987086827 & 8.987086827 & 0.007050595 \\
+			2019-07-29 & 7,901.63 & 8.974824334 & 8.974824334 & -0.012262493 \\
+			2019-08-05 & 7,630.42 & 8.939898156 & 8.939898156 & -0.034926178 \\
+			2019-08-12 & 7,727.00 & 8.952475968 & 8.952475968 & 0.012577812 \\
+			2019-08-19 & 7,772.54 & 8.958352288 & 8.958352288 & 0.005876320 \\
+			2019-08-26 & 7,922.86 & 8.977507518 & 8.977507518 & 0.019155230 \\
+			2019-09-02 & 7,908.14 & 8.975647490 & 8.975647490 & -0.001859618 \\
+			2019-09-09 & 7,918.59 & 8.976968413 & 8.976968413 & 0.001320913 \\
+			2019-09-16 & 7,849.10 & 8.968154167 & 8.968154167 & -0.008814246 \\
+			2019-09-23 & 7,723.44 & 8.952015127 & 8.952015127 & -0.016139040 \\
+			2019-09-30 & 7,551.58 & 8.929512105 & 8.929512105 & -0.022503022 \\
+			2019-10-07 & 7,670.38 & 8.945121424 & 8.945121424 & 0.015609319 \\
+			2019-10-14 & 7,676.89 & 8.945969809 & 8.945969809 & 0.000848385 \\
+			2019-10-21 & 7,745.04 & 8.954807917 & 8.954807917 & 0.008838108 \\
+			2019-10-28 & 7,830.30 & 8.965756077 & 8.965756077 & 0.010948159 \\
+			2019-11-04 & 7,933.32 & 8.978826865 & 8.978826865 & 0.013070788 \\
+			2019-11-11 & 7,810.42 & 8.963214006 & 8.963214006 & -0.015612859 \\
+			2019-11-18 & 7,756.93 & 8.956341942 & 8.956341942 & -0.006872064 \\
+			2019-11-25 & 7,630.43 & 8.939899505 & 8.939899505 & -0.016442437 \\
+			
+			\addlinespace
+			2019-12-02 & 7,750.82 & 8.955535897 & 8.955535897 & 0.015636392 \\
+			2019-12-09 & 7,633.31 & 8.940276857 & 8.940276857 & -0.015257040 \\
+			2019-12-16 & 7,599.65 & 8.935857459 & 8.935857459 & -0.004419398 \\
+			2019-12-23 & 7,592.07 & 8.934859534 & 8.934859534 & -0.000997925 \\
+			2019-12-30 & 7,631.72 & 8.940068551 & 8.940068551 & 0.005209017 \\
+			2020-01-06 & 7,635.45 & 8.940557181 & 8.940557181 & 0.000488630 \\
+			2020-01-13 & 7,475.59 & 8.919389298 & 8.919389298 & -0.021167883 \\
+			2020-01-20 & 7,348.36 & 8.902232424 & 8.902232424 & -0.017156874 \\
+			2020-01-27 & 6,900.31 & 8.839321632 & 8.839321632 & -0.062910792 \\
+			2020-02-03 & 7,146.01 & 8.874309410 & 8.874309410 & 0.034987778 \\
+			2020-02-10 & 7,051.97 & 8.861062318 & 8.861062318 & -0.013247092 \\
+			2020-02-17 & 7,218.98 & 8.884468948 & 8.884468948 & 0.023406630 \\
+			2020-02-24 & 6,627.08 & 8.798919579 & 8.798919579 & -0.085549369 \\
+			2020-03-02 & 6,612.26 & 8.796680750 & 8.796680750 & -0.002238829 \\
+			2020-03-09 & 5,673.65 & 8.643587911 & 8.643587911 & -0.153092839 \\
+			2020-03-16 & 4,602.06 & 8.434259330 & 8.434259330 & -0.209328581 \\
+			2020-03-23 & 5,142.11 & 8.545218761 & 8.545218761 & 0.110959431 \\
+			2020-03-30 & 5,265.52 & 8.568935185 & 8.568935185 & 0.023716425 \\
+			2020-04-06 & 5,510.79 & 8.614463268 & 8.614463268 & 0.045528083 \\
+			2020-04-13 & 5,731.72 & 8.653770974 & 8.653770974 & 0.039307706 \\
+			2020-04-20 & 5,361.78 & 8.587051251 & 8.587051251 & -0.066719723 \\
+			2020-04-27 & 5,544.29 & 8.620523848 & 8.620523848 & 0.033472597 \\
+			2020-05-04 & 5,532.27 & 8.618353499 & 8.618353499 & -0.002170350 \\
+			2020-05-11 & 5,437.09 & 8.600999233 & 8.600999233 & -0.017354266 \\
+			2020-05-18 & 5,540.44 & 8.619829181 & 8.619829181 & 0.018829948 \\
+			2020-05-25 & 5,946.52 & 8.690561453 & 8.690561453 & 0.070732272 \\
+			
+		\end{longtable}
+	\end{center}
+	
+	\bigskip
+	\noindent\textit{Note.} Specifications: name = PSE Holding Firms Index; intervals = weekly; batch = first (7/1/2019–11/25/2019) and second (12/2/2019–5/25/2020). Hyperlink: \url{https://www.tradingview.com/chart/?symbol=PSE%3AHDG}.
+	
+	
+\end{document}

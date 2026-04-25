@@ -6,20 +6,14 @@ requires = [
 build_backend = "setuptools.build_meta"
 
 [project]
-name = "Sectoral Correlation Networks of Philippine Stock Exchange"
+name = "pse-correlation-networks"
 version = "0.1.0"
 description = "A graph theoretic approach to analyzing the structural risk of the six PSE sectors before and during the Covid-19 pandemic and Enhanced Community Quarantine"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {
-    text = "MIT"
-}
+license = { text = "MIT" }
 
-authors = [
-    {
-        name = "williamjames10231"
-    }
-]
+authors = [{ name = "williamjames10231" }]
 
 keywords =[
     "math",
